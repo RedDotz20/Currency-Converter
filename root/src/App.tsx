@@ -2,21 +2,18 @@ import { useEffect, useState } from "react";
 import { Currency } from "./components/Currency";
 import { CurrencyType } from "./components/Currency";
 import axios from "axios";
-import "./App.scss";
-
 // https://app.freecurrencyapi.com/dashboard
 
 export default function App() {
 	const [currencies, setCurrencies] = useState<CurrencyType | {}>({});
+
 	const getCurrencies = async () => {
-		const response = await axios.get(
-			"https://api.freecurrencyapi.com/v1/latest",
-			{
-				headers: {
-					apikey: "gwRkxLlgKJx36K810uCTKfZjz8ZsLqnGDPqDp0FH",
-				},
-			}
-		);
+		const baseURL = "https://api.freecurrencyapi.com/v1/latest";
+		const response = await axios.get(baseURL, {
+			headers: {
+				apikey: "gwRkxLlgKJx36K810uCTKfZjz8ZsLqnGDPqDp0FH",
+			},
+		});
 		setCurrencies(() => response.data.data);
 	};
 
