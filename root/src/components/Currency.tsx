@@ -4,16 +4,19 @@ import { currencyInterface } from "../interface/currencyType";
 export function Currency(props: currencyInterface) {
 	const [base, setBase] = useState<number>(0);
 	const [convertTo, setConvertTo] = useState<number>(0);
-	const [value, setValue] = useState<number | null>(null);
 
 	console.log("Base:", typeof base, "ConvertTo:", typeof convertTo);
 	console.log(props.currencies);
 
 	return (
 		<>
-			<h2>{base}</h2>
-			<h2>{convertTo}</h2>
-			<h1>{base * convertTo}</h1>
+			<h2>BASE: {base}</h2>
+			<h2>TO: {convertTo}</h2>
+			{(base || convertTo) !== 0 ? (
+				<h1>Result: {base * convertTo}</h1>
+			) : (
+				<h1>No Value</h1>
+			)}
 			<form>
 				<label htmlFor="base">Base</label>
 				<select
