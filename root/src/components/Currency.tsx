@@ -1,14 +1,9 @@
-import { AriaAttributes, DOMAttributes, useState } from "react";
-
-// declare module "react" {
-// 	interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
-// 		rel?: string;
-// 	}
-// }
+import { useState } from "react";
 
 export function Currency(props: { currencies: CurrencyType | {} }) {
 	const [base, setBase] = useState(null);
 	const [convertTo, setConvertTo] = useState(null);
+
 	return (
 		<form>
 			<label htmlFor="base">Base</label>
@@ -25,24 +20,6 @@ export function Currency(props: { currencies: CurrencyType | {} }) {
 				})}
 			</select>
 		</form>
-		// <table>
-		// 	<thead>
-		// 		<tr>
-		// 			<td>Currency</td>
-		// 			<td>Value</td>
-		// 		</tr>
-		// 	</thead>
-		// 	<tbody>
-		// 		{Object.entries(props.currencies).map((value) => {
-		// 			return (
-		// 				<tr>
-		// 					<td>{value[0]}</td>
-		// 					<td>{value[1]}</td>
-		// 				</tr>
-		// 			);
-		// 		})}
-		// 	</tbody>
-		// </table>
 	);
 }
 
