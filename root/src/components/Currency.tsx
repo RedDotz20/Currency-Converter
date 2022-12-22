@@ -25,7 +25,11 @@ export function Currency(props: currencyInterface) {
 					onChange={(e) => setBase(parseFloat(e.target.value))}
 				>
 					{Object.entries(props.currencies).map((value, key) => {
-						return <option value={value[1]}>{value[0]}</option>;
+						return (
+							<option key={key} value={value[1]}>
+								{value[0]}
+							</option>
+						);
 					})}
 				</select>
 
@@ -35,8 +39,12 @@ export function Currency(props: currencyInterface) {
 					id="convertTo"
 					onChange={(e) => setConvertTo(parseFloat(e.target.value))}
 				>
-					{Object.entries(props.currencies).map((value) => {
-						return <option value={value[1]}>{value[0]}</option>;
+					{Object.entries(props.currencies).map((value, key) => {
+						return (
+							<option key={key} value={value[1]}>
+								{value[0]}
+							</option>
+						);
 					})}
 				</select>
 			</form>

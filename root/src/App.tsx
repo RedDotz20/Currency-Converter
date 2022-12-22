@@ -1,29 +1,12 @@
-import { useEffect, useState } from "react";
 import { Currency } from "./components/Currency";
-import axios from "axios";
-// https://app.freecurrencyapi.com/dashboard
+import useFetchAPI from "./hooks/useFetchAPI";
 
 export default function App() {
-	const [currencies, setCurrencies] = useState<{ string: number } | {}>({});
-
-	const getCurrencies = async () => {
-		const baseURL = "https://api.freecurrencyapi.com/v1/latest";
-		const response = await axios.get(baseURL, {
-			headers: {
-				apikey: "gwRkxLlgKJx36K810uCTKfZjz8ZsLqnGDPqDp0FH",
-			},
-		});
-		setCurrencies(() => response.data.data);
-	};
-
-	useEffect(() => {
-		getCurrencies();
-	}, []);
+	const { data, error, loading } = useFetchAPI();
 
 	return (
 		<div className="App">
-			<button onClick={() => getCurrencies()}>G E T C U R R E N C Y</button>
-			<Currency currencies={currencies} />
+			<Currency currencies={data} />
 		</div>
 	);
 }

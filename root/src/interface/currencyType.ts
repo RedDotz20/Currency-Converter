@@ -1,3 +1,3 @@
 export interface currencyInterface {
-	currencies: { string: number } | {};
+	currencies: { string: number } | {} | string;
 }
