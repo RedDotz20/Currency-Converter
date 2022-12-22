@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Currency } from "./components/Currency";
-import { CurrencyType } from "./components/Currency";
 import axios from "axios";
 // https://app.freecurrencyapi.com/dashboard
 
 export default function App() {
-	const [currencies, setCurrencies] = useState<CurrencyType | {}>({});
+	const [currencies, setCurrencies] = useState<{ string: number } | {}>({});
 
 	const getCurrencies = async () => {
 		const baseURL = "https://api.freecurrencyapi.com/v1/latest";
