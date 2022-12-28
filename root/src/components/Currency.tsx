@@ -1,43 +1,59 @@
 import { useState } from "react";
-import { currencyInterface } from "../interface/currencyType";
+import { currencyInterface, valueInterface } from "../interface/currencyType";
 
 export function Currency(props: currencyInterface) {
-	const [base, setBase] = useState<number>(0);
-	const [convertTo, setConvertTo] = useState<number>(0);
+	const [result, setResult] = useState<number>(0);
+	const [values, setValues] = useState<valueInterface>({
+		amount: 0,
+		from: 0,
+		to: 0,
+	});
 
-	console.log("Base:", typeof base, "ConvertTo:", typeof convertTo);
-	console.log(props.currencies);
+	const handleChange = (
+		event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+	) => {
+		setValues({
+			...values,
+			[event.target.name]: parseFloat(event.target.value),
+		});
+	};
+
+	const handleSubmit = (event: any) => {
+		event.preventDefault();
+		setResult(() => values.amount * values.from * values.to);
+	};
+
+	console.log("result", result);
+	console.log("from", values.from, "to", values.to);
+	console.log("amount", values.amount);
 
 	return (
-		<>
-			<h2>BASE: {base}</h2>
-			<h2>TO: {convertTo}</h2>
-			{(base || convertTo) !== 0 ? (
-				<h1>Result: {base * convertTo}</h1>
-			) : (
-				<h1>No Value</h1>
-			)}
-			<form>
-				<label htmlFor="base">Base</label>
-				<select
-					name="base"
-					id="base"
-					onChange={(e) => setBase(parseFloat(e.target.value))}
-				>
-					{Object.entries(props.currencies).map((value, key) => {
-						return (
-							<option key={key} value={value[1]}>
-								{value[0]}
-							</option>
-						);
-					})}
-				</select>
+		<form onSubmit={handleSubmit} className="flex justify-center">
+			{/* Amount value */}
+			<div className="flex flex-col text-white mx-8">
+				<label htmlFor="convertValue">Enter Value to Convert</label>
+				<input
+					className="text-black px-2 py-1"
+					min="1"
+					type="number"
+					id="amount"
+					name="amount"
+					value={values.amount}
+					onChange={handleChange}
+				/>
+			</div>
 
-				<label htmlFor="convertTo">Convert To</label>
+			{/* From Value */}
+			<div className="mx-8 w-20">
+				<label htmlFor="base" className="text-white">
+					FROM
+				</label>
 				<select
-					name="convertTo"
-					id="convertTo"
-					onChange={(e) => setConvertTo(parseFloat(e.target.value))}
+					name="from"
+					id="from"
+					onChange={handleChange}
+					value={values.from}
+					className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 				>
 					{Object.entries(props.currencies).map((value, key) => {
 						return (
@@ -47,11 +63,37 @@ export function Currency(props: currencyInterface) {
 						);
 					})}
 				</select>
-			</form>
-		</>
+			</div>
+
+			{/* To Value */}
+			<div className="mx-8 w-20">
+				<label htmlFor="convertTo" className="text-white">
+					TO
+				</label>
+				<select
+					name="to"
+					id="to"
+					value={values.to}
+					onChange={handleChange}
+					className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+				>
+					{Object.entries(props.currencies).map((value, key) => {
+						return (
+							<option key={key} value={value[1]}>
+								{value[0]}
+							</option>
+						);
+					})}
+				</select>
+			</div>
+
+			<button
+				type="submit"
+				disabled={false}
+				className="p-2 w-40 rounded text-white bg-blue-600"
+			>
+				CONVERT
+			</button>
+		</form>
 	);
 }
-
-// export interface CurrencyType {
-// 	string: number;
-// }
