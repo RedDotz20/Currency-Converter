@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function useFetchAPI() {
-	const [data, setData] = useState<{ string: number } | {}>({});
+	// const [data, setData] = useState<{ string: number } | {}>({});
+	const [data, setData] = useState<any>(null);
 	const [error, setError] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 

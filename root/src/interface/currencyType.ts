@@ -7,3 +7,7 @@ export interface valueInterface {
 	from: number;
 	to: number;
 }
+
+export interface currencyValues {
+	string: number;
+}
