@@ -8,7 +8,7 @@ export default function App() {
 	if (error)
 		return <h3 className="text-white grid place-items-center">{error}</h3>;
 
-	console.log(typeof Object.keys(data));
+	// console.log(typeof Object.keys(data));
 
 	return (
 		<div className="p-8 h-full flex flex-col justify-center text-center">

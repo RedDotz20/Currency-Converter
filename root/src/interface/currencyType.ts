@@ -11,3 +11,8 @@ export interface valueInterface {
 export interface currencyValues {
 	string: number;
 }
+
+export interface optionInterface {
+	currKeys: string[];
+	currValues: any[];
+}

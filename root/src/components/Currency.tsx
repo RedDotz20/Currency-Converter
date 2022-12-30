@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { currencyValues, valueInterface } from "../interface/currencyType";
+import {
+	currencyValues,
+	optionInterface,
+	valueInterface,
+} from "../interface/currencyType";
 import Result from "./Result";
 
 export function Currency(props: { currencies: currencyValues }) {
-	const [options, setOptions] = useState<currencyValues | null>(
-		props.currencies
-	);
+	const [options, setOptions] = useState<optionInterface>({
+		currKeys: Object.keys(props.currencies),
+		currValues: Object.values(props.currencies),
+	});
 
 	const [result, setResult] = useState<number>(0);
 	const [values, setValues] = useState<valueInterface>({
@@ -60,10 +65,10 @@ export function Currency(props: { currencies: currencyValues }) {
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
 						{options != (undefined || null) &&
-							Object.keys(options).map((value, key) => {
+							options.currKeys.map((values, key) => {
 								return (
-									<option key={key} value={key}>
-										{value}
+									<option key={key} value={options.currValues[key]}>
+										{values}
 									</option>
 								);
 							})}
@@ -82,10 +87,10 @@ export function Currency(props: { currencies: currencyValues }) {
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
 						{options != (undefined || null) &&
-							Object.keys(options).map((value, key) => {
+							options.currKeys.map((values, key) => {
 								return (
-									<option key={key} value={key}>
-										{value}
+									<option key={key} value={options.currValues[key]}>
+										{values}
 									</option>
 								);
 							})}
