@@ -1,22 +1,32 @@
 import { useState } from "react";
 import {
-	currencyValues,
+	currencyInterface,
 	optionInterface,
 	valueInterface,
 } from "../interface/currencyType";
 import Result from "./Result";
 
-export function Currency(props: { currencies: currencyValues }) {
-	const [options, setOptions] = useState<optionInterface>({
-		currKeys: Object.keys(props.currencies),
-		currValues: Object.values(props.currencies),
-	});
+function Currency({ currencies }: currencyInterface) {
+	const options: optionInterface = {
+		currKeys: Object.keys(currencies),
+		currValues: Object.values(currencies),
+	};
 	const [result, setResult] = useState<number>(0);
 	const [values, setValues] = useState<valueInterface>({
 		amount: 1,
-		from: options.currValues[31], //? USD Currency
-		to: options.currValues[23], //? PHP Currency
+		fromValue: 31, //? USD Currency
+		toValue: 23, //? PHP Currency
 	});
+
+	const { currKeys, currValues } = options;
+	const { amount, fromValue, toValue } = values;
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const fixedResult = amount * currValues[fromValue] * currValues[toValue];
+		const convertedResult = fixedResult.toFixed(4);
+		setResult(() => parseFloat(convertedResult));
+	};
 
 	const handleChange = (
 		event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -25,13 +35,6 @@ export function Currency(props: { currencies: currencyValues }) {
 			...values,
 			[event.target.name]: parseFloat(event.target.value),
 		});
-	};
-
-	const handleSubmit = (event: any) => {
-		event.preventDefault();
-		const fixedResult = values.amount * values.from * values.to,
-			convertedResult = fixedResult.toFixed(4);
-		setResult(() => parseFloat(convertedResult));
 	};
 
 	return (
@@ -50,20 +53,20 @@ export function Currency(props: { currencies: currencyValues }) {
 				</div>
 
 				<div className="mx-8 w-20">
-					<label htmlFor="from" className="text-white">
+					<label htmlFor="fromValue" className="text-white">
 						FROM
 					</label>
 					<select
-						name="from"
-						id="from"
+						name="fromValue"
+						id="fromValue"
 						onChange={handleChange}
-						defaultValue={values.from}
+						defaultValue={values.fromValue}
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
 						{options != (undefined || null) &&
 							options.currKeys.map((values, key) => {
 								return (
-									<option key={key} value={options.currValues[key]}>
+									<option key={key} value={key}>
 										{values}
 									</option>
 								);
@@ -72,20 +75,20 @@ export function Currency(props: { currencies: currencyValues }) {
 				</div>
 
 				<div className="mx-8 w-20">
-					<label htmlFor="to" className="text-white">
+					<label htmlFor="toValue" className="text-white">
 						TO
 					</label>
 					<select
-						name="to"
-						id="to"
-						defaultValue={values.to}
+						name="toValue"
+						id="toValue"
+						defaultValue={values.toValue}
 						onChange={handleChange}
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
 						{options != (undefined || null) &&
 							options.currKeys.map((values, key) => {
 								return (
-									<option key={key} value={options.currValues[key]}>
+									<option key={key} value={key}>
 										{values}
 									</option>
 								);
@@ -102,7 +105,11 @@ export function Currency(props: { currencies: currencyValues }) {
 				</button>
 			</form>
 
-			{result > 1 && <Result>{result}</Result>}
+			{result > 1 && (
+				<Result resultCurrency={currKeys[toValue]} resultValue={result} />
+			)}
 		</>
 	);
 }
+
+export default Currency;

@@ -1,15 +1,11 @@
 export interface currencyInterface {
-	currencies: { string: number } | {} | string;
+	currencies: { string: number } | {};
 }
 
 export interface valueInterface {
 	amount: GLfloat;
-	from: number;
-	to: number;
-}
-
-export interface currencyValues {
-	string: number;
+	fromValue: number;
+	toValue: number;
 }
 
 export interface optionInterface {

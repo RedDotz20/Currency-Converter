@@ -1,14 +1,16 @@
-import React from "react";
+import numberFormat from "../utils/numberFormat";
 
 interface ResultInterface {
-	children: React.ReactNode;
+	resultCurrency: string;
+	resultValue: number;
 }
 
-function Result(props: ResultInterface) {
+function Result({ resultCurrency, resultValue }: ResultInterface) {
+	const formatedResult = numberFormat(resultCurrency, resultValue);
 	return (
 		<div className="text-white font-semibold my-4">
 			<h1>RESULTS</h1>
-			{props.children}
+			<h2>{formatedResult}</h2>
 		</div>
 	);
 }
