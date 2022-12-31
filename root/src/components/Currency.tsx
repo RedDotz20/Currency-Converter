@@ -11,15 +11,12 @@ export function Currency(props: { currencies: currencyValues }) {
 		currKeys: Object.keys(props.currencies),
 		currValues: Object.values(props.currencies),
 	});
-
 	const [result, setResult] = useState<number>(0);
 	const [values, setValues] = useState<valueInterface>({
-		amount: 0,
-		from: 0,
-		to: 0,
+		amount: 1,
+		from: options.currValues[31], //? USD Currency
+		to: options.currValues[23], //? PHP Currency
 	});
-
-	console.table(values);
 
 	const handleChange = (
 		event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -34,7 +31,7 @@ export function Currency(props: { currencies: currencyValues }) {
 		event.preventDefault();
 		const fixedResult = values.amount * values.from * values.to,
 			convertedResult = fixedResult.toFixed(4);
-		setResult(() => parseInt(convertedResult));
+		setResult(() => parseFloat(convertedResult));
 	};
 
 	return (
@@ -48,20 +45,19 @@ export function Currency(props: { currencies: currencyValues }) {
 						type="number"
 						id="amount"
 						name="amount"
-						value={values.amount}
 						onChange={handleChange}
 					/>
 				</div>
 
 				<div className="mx-8 w-20">
-					<label htmlFor="base" className="text-white">
+					<label htmlFor="from" className="text-white">
 						FROM
 					</label>
 					<select
 						name="from"
 						id="from"
 						onChange={handleChange}
-						value={values.from}
+						defaultValue={values.from}
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
 						{options != (undefined || null) &&
@@ -76,13 +72,13 @@ export function Currency(props: { currencies: currencyValues }) {
 				</div>
 
 				<div className="mx-8 w-20">
-					<label htmlFor="convertTo" className="text-white">
+					<label htmlFor="to" className="text-white">
 						TO
 					</label>
 					<select
 						name="to"
 						id="to"
-						value={values.to}
+						defaultValue={values.to}
 						onChange={handleChange}
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
@@ -99,14 +95,14 @@ export function Currency(props: { currencies: currencyValues }) {
 
 				<button
 					type="submit"
-					disabled={false}
+					disabled={isNaN(values.amount) || values.amount < 1}
 					className="p-2 w-40 rounded text-white bg-blue-600"
 				>
 					CONVERT
 				</button>
 			</form>
 
-			{/* {result < 1 || (null && <Result>{result.toFixed(4)}</Result>)} */}
+			{result > 1 && <Result>{result}</Result>}
 		</>
 	);
 }
