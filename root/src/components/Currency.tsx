@@ -1,32 +1,27 @@
 import { useState } from "react";
-import {
-	currencyInterface,
-	optionInterface,
-	valueInterface,
-} from "../interface/currencyType";
+import { valueInterface } from "../interface/currencyType";
 import Result from "./Result";
 
-function Currency({ currencies }: currencyInterface) {
-	const options: optionInterface = {
-		currKeys: Object.keys(currencies),
-		currValues: Object.values(currencies),
-	};
+function Currency({ currencies }: any) {
 	const [result, setResult] = useState<number>(0);
+	const [amount, setAmount] = useState<GLfloat>(1);
 	const [values, setValues] = useState<valueInterface>({
-		amount: 1,
-		fromValue: 31, //? USD Currency
-		toValue: 23, //? PHP Currency
+		fromValue: 31, //? USD
+		toValue: 23, //? PHP
 	});
 
-	const { currKeys, currValues } = options;
-	const { amount, fromValue, toValue } = values;
+	const { fromValue, toValue } = values;
+	console.table(values);
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const fixedResult = amount * currValues[fromValue] * currValues[toValue];
+		const fixedResult =
+			amount * currencies[fromValue].value * currencies[toValue].value;
 		const convertedResult = fixedResult.toFixed(4);
 		setResult(() => parseFloat(convertedResult));
 	};
+
+	// console.log(currencies[fromValue].value);
 
 	const handleChange = (
 		event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -60,17 +55,16 @@ function Currency({ currencies }: currencyInterface) {
 						name="fromValue"
 						id="fromValue"
 						onChange={handleChange}
-						defaultValue={values.fromValue}
+						// defaultValue={currencies[fromValue]}
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
-						{options != (undefined || null) &&
-							options.currKeys.map((values, key) => {
-								return (
-									<option key={key} value={key}>
-										{values}
-									</option>
-								);
-							})}
+						{currencies.map((values: any, key: any) => {
+							return (
+								<option key={key} value={values[key]}>
+									{values.currency}
+								</option>
+							);
+						})}
 					</select>
 				</div>
 
@@ -81,33 +75,32 @@ function Currency({ currencies }: currencyInterface) {
 					<select
 						name="toValue"
 						id="toValue"
-						defaultValue={values.toValue}
+						// defaultValue={values.toValue.value}
 						onChange={handleChange}
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
-						{options != (undefined || null) &&
-							options.currKeys.map((values, key) => {
-								return (
-									<option key={key} value={key}>
-										{values}
-									</option>
-								);
-							})}
+						{currencies.map((values: any, key: any) => {
+							return (
+								<option key={key} value={values[key].currency}>
+									{values.currency}
+								</option>
+							);
+						})}
 					</select>
 				</div>
 
 				<button
 					type="submit"
-					disabled={isNaN(values.amount) || values.amount < 1}
+					// disabled={isNaN(values.amount) || values.amount < 1}
 					className="p-2 w-40 rounded text-white bg-blue-600"
 				>
 					CONVERT
 				</button>
 			</form>
 
-			{result > 1 && (
+			{/* {result > 1 && (
 				<Result resultCurrency={currKeys[toValue]} resultValue={result} />
-			)}
+			)} */}
 		</>
 	);
 }

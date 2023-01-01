@@ -21,10 +21,11 @@ export default function useFetchAPI() {
 		async function fetchData() {
 			try {
 				const baseURL = "https://api.freecurrencyapi.com/v1/latest";
+				const APIKey = "gwRkxLlgKJx36K810uCTKfZjz8ZsLqnGDPqDp0FH";
 				const response = await axios
 					.get(baseURL, {
 						headers: {
-							apikey: "gwRkxLlgKJx36K810uCTKfZjz8ZsLqnGDPqDp0FH",
+							apikey: APIKey,
 						},
 					})
 					.then((response) => {

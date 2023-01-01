@@ -3,12 +3,6 @@ export interface currencyInterface {
 }
 
 export interface valueInterface {
-	amount: GLfloat;
 	fromValue: number;
 	toValue: number;
-}
-
-export interface optionInterface {
-	currKeys: string[];
-	currValues: any[];
 }
