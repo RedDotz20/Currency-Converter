@@ -1,34 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { valueInterface } from "../interface/currencyType";
-import Result from "./Result";
+// import Result from "./Result";
 
 function Currency({ currencies }: any) {
-	const [result, setResult] = useState<number>(0);
-	const [amount, setAmount] = useState<GLfloat>(1);
-	const [values, setValues] = useState<valueInterface>({
-		fromValue: 31, //? USD
-		toValue: 23, //? PHP
-	});
+	const [{ fromValue, toValue }, setValues] = useState<any>({
+			fromValue: currencies[31].currency, //? USD currency
+			toValue: currencies[23].currency, //? PHP currency
+		}),
+		[result, setResult] = useState<number>(0),
+		[amount, setAmount] = useState<GLfloat>(1);
 
-	const { fromValue, toValue } = values;
-	console.table(values);
+	const findValIndex = (selectedValue: string) =>
+		currencies.findIndex(
+			(index: { currency: string }) => index.currency === selectedValue
+		);
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const fixedResult =
-			amount * currencies[fromValue].value * currencies[toValue].value;
-		const convertedResult = fixedResult.toFixed(4);
+		const fromValIndex: number = currencies[findValIndex(fromValue)].value;
+		const toValIndex: number = currencies[findValIndex(toValue)].value,
+			convertedResult: string = (amount * fromValIndex * toValIndex).toFixed(4);
 		setResult(() => parseFloat(convertedResult));
 	};
 
-	// console.log(currencies[fromValue].value);
+	useEffect(() => {
+		console.log(result);
+	}, [handleSubmit]);
 
 	const handleChange = (
 		event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
 	) => {
 		setValues({
-			...values,
-			[event.target.name]: parseFloat(event.target.value),
+			...{ fromValue, toValue },
+			[event.target.name]: event.target.value,
 		});
 	};
 
@@ -55,12 +59,12 @@ function Currency({ currencies }: any) {
 						name="fromValue"
 						id="fromValue"
 						onChange={handleChange}
-						// defaultValue={currencies[fromValue]}
+						defaultValue={fromValue}
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
-						{currencies.map((values: any, key: any) => {
+						{currencies.map((values: { currency: string }, key: number) => {
 							return (
-								<option key={key} value={values[key]}>
+								<option key={key} value={values.currency}>
 									{values.currency}
 								</option>
 							);
@@ -75,14 +79,14 @@ function Currency({ currencies }: any) {
 					<select
 						name="toValue"
 						id="toValue"
-						// defaultValue={values.toValue.value}
+						defaultValue={toValue}
 						onChange={handleChange}
 						className="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal placeholder:text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 					>
-						{currencies.map((values: any, key: any) => {
+						{currencies.map((val: { currency: string }, key: number) => {
 							return (
-								<option key={key} value={values[key].currency}>
-									{values.currency}
+								<option key={key} value={val.currency}>
+									{val.currency}
 								</option>
 							);
 						})}

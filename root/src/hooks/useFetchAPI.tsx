@@ -13,7 +13,7 @@ interface errorDataInterface {
 }
 
 export default function useFetchAPI() {
-	const [data, setData] = useState<keyValuesInterface[]>([]);
+	const [data, setData] = useState<keyValuesInterface[] | any>([]);
 	const [error, setError] = useState<errorDataInterface | unknown>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 
@@ -29,6 +29,7 @@ export default function useFetchAPI() {
 						},
 					})
 					.then((response) => {
+						// setData(() => response.data.data);
 						setData(() =>
 							Object.entries(response.data.data).map(([currency, value]) => ({
 								currency: currency as string,
