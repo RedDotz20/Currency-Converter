@@ -1,5 +1,5 @@
-function numberFormat(currency: string, value: number) {
-	const result = new Intl.NumberFormat("de-DE", {
+function numberFormat(currency: any, value: any) {
+	const result = new Intl.NumberFormat("en-US", {
 		style: "currency",
 		currency: currency,
 	}).format(value);
